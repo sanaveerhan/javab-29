@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+
+    <style>
+      
+      *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body{
+    font-size: 16px;
+   
+    background-image: url(https://img.freepik.com/premium-photo/abstract-blurry-background-high-quality-image-download_555090-15085.jpg?semt=ais_hybrid);
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h2{
+    text-align: center;
+    color: #efbe58;
+}
+.form{
+    width:600px ;
+    height: 700px;
+    padding: 15px 40px 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-image: url(https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcm0zMDktYWV3LTAxM18xXzEuanBn.jpg);
+    
+    margin: 4% auto;
+}
+label{
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+}
+label i{
+
+   
+  
+    font-size: 80%;
+}
+input,select{
+    margin-top: 10px;
+    margin-bottom: 20px;
+   
+    color: white;
+    border: 1px solid#ccc;
+    padding: 10px;
+    display: block;
+    width: 500px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background-color: #a9bae64a;
+}
+textarea{
+    
+    color: white;
+    background-color: #a9bae64a;
+    width: 300px;
+    margin-bottom: 20px;
+    border: 1px solid#ccc;
+    
+   
+}
+.box{
+    padding-bottom: 10px;
+}
+.form-inline{
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 8px 10px 4px;
+    border-radius: 2px;
+}
+.form-inline label, .form-inline input{
+    margin-top: 20px;
+    display: inline-block;
+    width: auto;
+    padding-right: 15px;
+
+}
+.error{
+    
+    margin-bottom: 10px;
+    color: red;
+    font-size: 90%;
+}
+input[type="text"]{
+    outline: none;
+}
+input[type="submit"]{
+    font-size: 110%;
+    font-weight: 200;
+    background-color: #efbe58;
+    border-color: #efbe58;
+  
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+}
+input[type="submit"]:hover{
+    background: #bd432e;
+    border-color: #bd432e;
+}
+.form-control small{
+color: #e74c3c;
+
+visibility: hidden;
+}
+
+.form-control.error small{
+    visibility: visible;
+}
+
+
+       
+       
+      
+        @media (max-width: 600px) {
+            .form {
+                padding: 20px;
+                max-width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <form action="succes.html" class="form" id="form">
+        <div class="container">
+            <div class="header">
+                <h2>Registration Form</h2>
+            </div>
+        </div>
+       
+        <div class="form-control" id="username-group">
+            <label for="username">Username</label>
+            <input type="text" name="name" id="username" placeholder="Enter Your Name">
+            <span id="username-error" class="error-message"></span>
+        </div>
+        <div class="form-control" id="email-group">
+            <label for="email">Email Address</label>
+            <input type="text" name="email" id="email" placeholder="Enter Your Email">
+            <span id="email-error" class="error-message"></span>
+        </div>
+        <div class="form-control" id="password-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Enter Your Password">
+            <span id="password-error" class="error-message"></span>
+        </div>
+        <div class="form-control" id="mobile-group">
+            <label for="mobile">Mobile Number</label>
+            <input type="text" name="mobile" id="mobile" placeholder="Enter Your Phone Number">
+            <span id="mobile-error" class="error-message"></span>
+        </div>
+        <div class="form-control" id="message-group">
+            <label for="message">Your Message</label>
+            <textarea rows="5" name="message" id="message" placeholder="Enter Your Message"></textarea>
+            <span id="message-error" class="error-message"></span>
+        </div>
+      
+        <input type="submit" value="Submit" class="btn">
+    </form>
+   
+    <script>
+        const form = document.getElementById('form');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const mobile = document.getElementById('mobile');
+        const message = document.getElementById('message');
+
+        // Add event listener
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (validate()) {
+                form.submit();
+            }
+        });
+
+        // Email validation function
+        const isEmail = (emailVal) => {
+            const atSymbol = emailVal.indexOf("@");
+            if (atSymbol < 1) return false;
+            const dot = emailVal.lastIndexOf(".");
+            if (dot <= atSymbol + 2 || dot === emailVal.length - 1) return false;
+            return true;
+        };
+
+        // Set error message
+        const setErrorMsg = (input, message) => {
+            const formControl = input.parentElement;
+            const errorSpan = formControl.querySelector('.error-message');
+            formControl.className = "form-control error";
+            errorSpan.innerText = message;
+        };
+
+        // Set success message
+        const setSuccessMsg = (input) => {
+            const formControl = input.parentElement;
+            formControl.className = "form-control success";
+        };
+
+        // Validate function
+        const validate = () => {
+            const usernameVal = username.value.trim();
+            const emailVal = email.value.trim();
+            const passwordVal = password.value.trim();
+            const mobileVal = mobile.value.trim();
+            const messageVal = message.value.trim();
+
+            let isValid = true; // Track if form is valid
+
+            // Validate username
+            if (usernameVal === "") {
+                setErrorMsg(username, "Username cannot be blank");
+                isValid = false;
+            } else if (usernameVal.length < 3) {
+                setErrorMsg(username, "Username must be at least 3 characters");
+                isValid = false;
+            } else {
+                setSuccessMsg(username);
+            }
+
+            // Validate email
+            if (emailVal === "") {
+                setErrorMsg(email, "Email cannot be blank");
+                isValid = false;
+            } else if (!isEmail(emailVal)) {
+                setErrorMsg(email, "Invalid email format");
+                isValid = false;
+            } else {
+                setSuccessMsg(email);
+            }
+
+            // Validate password
+            if (passwordVal === "") {
+                setErrorMsg(password, "Password cannot be blank");
+                isValid = false;
+            } else if (passwordVal.length < 6) {
+                setErrorMsg(password, "Password must be at least 6 characters");
+                isValid = false;
+            } else {
+                setSuccessMsg(password);
+            }
+
+            // Validate mobile
+            if (mobileVal === "") {
+                setErrorMsg(mobile, "Mobile number cannot be blank");
+                isValid = false;
+            } else if (!/^\d{10}$/.test(mobileVal)) {
+                setErrorMsg(mobile, "Mobile number must be 10 digits");
+                isValid = false;
+            } else {
+                setSuccessMsg(mobile);
+            }
+
+            // Validate message
+            if (messageVal === "") {
+                setErrorMsg(message, "Message cannot be blank");
+                isValid = false;
+            } else {
+                setSuccessMsg(message);
+            }
+
+            return isValid;
+        };
+    </script>
+</body>
+</html>
+
